@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.sudokuv1.controller.WelcomeController"
+      stylesheets="@styles/styles.css">
+
+    <Label text="¡Bienvenido a Sudoku 6x6!"
+           style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2F4F4F;"/>
+
+    <Button fx:id="startButton" text="Iniciar Juego"
+            onAction="#startGame"
+            style="-fx-background-color: #5F9EA0; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 10 20; -fx-font-weight: bold;"/>
+
+</VBox>
