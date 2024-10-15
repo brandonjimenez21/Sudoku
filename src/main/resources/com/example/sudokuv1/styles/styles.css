@@ -1,0 +1,27 @@
+/* Estilos para la pantalla de inicio */
+
+.root {
+    -fx-background-color: #f0f8ff; /* Color de fondo suave */
+    -fx-padding: 20; /* Espaciado interno */
+    -fx-alignment: center; /* Centra los elementos */
+}
+
+.label {
+    -fx-font-size: 24px; /* Tamaño de fuente más grande */
+    -fx-font-weight: bold; /* Negrita */
+    -fx-text-fill: #2c3e50; /* Color del texto */
+    -fx-padding: 10; /* Espaciado alrededor del texto */
+}
+
+.button {
+    -fx-font-size: 18px; /* Tamaño de fuente */
+    -fx-background-color: #3498db; /* Color de fondo del botón */
+    -fx-text-fill: white; /* Color del texto del botón */
+    -fx-padding: 10 20; /* Espaciado interno del botón */
+    -fx-background-radius: 5; /* Bordes redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.0, 0, 1); /* Sombra en el botón */
+}
+
+.button:hover {
+    -fx-background-color: #2980b9; /* Color de fondo al pasar el mouse */
+}
