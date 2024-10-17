@@ -35,27 +35,6 @@ public class GameController {
         validateBoardButton.setDisable(true); // Deshabilitar el botón al inicio
     }
 
-    public void validateNumber() {
-
-        TextField lastEdited = view.getLastEditedCell();
-        if (lastEdited != null && !lastEdited.getText().isEmpty()) {
-            int number = Integer.parseInt(lastEdited.getText());
-            // Buscar la posición de la celda editada
-            for (int row = 0; row < 6; row++) {
-                for (int col = 0; col < 6; col++) {
-                    if (view.getCells()[row][col] == lastEdited) {
-                        if (model.isValid(row, col, number)) {
-                            lastEdited.setStyle("-fx-background-color: lightgreen;"); // Correcto
-                        } else {
-                            lastEdited.setStyle("-fx-background-color: lightcoral;"); // Incorrecto
-                        }
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
     public void validateBoard() {
         boolean isComplete = true;
         boolean isValid = true;
@@ -79,7 +58,7 @@ public class GameController {
                     isValid = false;
                     errorMessage.append("Número repetido en fila ").append(row + 1)
                             .append(", columna ").append(col + 1).append(".\n");
-                    view.getCells()[row][col].setStyle("-fx-background-color: lightcoral;");
+                    view.getCells()[row][col].setStyle("-fx-background-color: lightcoral; -fx-alignment: center;");
                 } else {
                     view.getCells()[row][col].setStyle(""); // Restablecer si es válido
                 }
@@ -96,7 +75,7 @@ public class GameController {
                     isValid = false;
                     errorMessage.append("Número repetido en columna ").append(row + 1)
                             .append(", fila ").append(col + 1).append(".\n");
-                    view.getCells()[col][row].setStyle("-fx-background-color: lightcoral;");
+                    view.getCells()[col][row].setStyle("-fx-background-color: lightcoral; -fx-alignment: center;");
                 } else {
                     view.getCells()[col][row].setStyle(""); // Restablecer si es válido
                 }
@@ -122,7 +101,7 @@ public class GameController {
                                     .append(blockRow + 1)
                                     .append(" y columna ")
                                     .append(blockCol + 1).append(".\n");
-                            view.getCells()[blockRow + row][blockCol + col].setStyle("-fx-background-color: lightcoral;");
+                            view.getCells()[blockRow + row][blockCol + col].setStyle("-fx-background-color: lightcoral; -fx-alignment: center;");
                         } else {
                             view.getCells()[blockRow + row][blockCol + col].setStyle(""); // Restablecer si es válido
                         }
