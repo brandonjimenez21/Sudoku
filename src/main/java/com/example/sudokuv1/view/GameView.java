@@ -2,6 +2,8 @@ package com.example.sudokuv1.view;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import com.example.sudokuv1.model.SudokuModel;
 
@@ -31,14 +33,19 @@ public class GameView {
                 if (number != 0) {
                     cell.setText(Integer.toString(number)); // Establece el número como texto
                     cell.setEditable(false); // Deshabilita la edición de la celda
-                    cell.setStyle("-fx-background-color: lightgray;"); // Cambia el color para mostrar que es fijo
+                    cell.setStyle("-fx-background-color: lightgray; -fx-alignment: center;"); // Cambia el color para mostrar que es fijo
                 } else {
                     cell.setText(""); // Celdas vacías para ingresar números
+                    int finalRow = row;
+                    int finalCol = col;
                     cell.textProperty().addListener((observable, oldValue, newValue) -> {
                         // Validar que el nuevo valor sea un número entre 1 y 6
                         if (newValue.matches("^[1-6]?$")) {
                             // Mantener referencia a la última celda editada
                             lastEditedCell = cell; // Guardar la celda actualmente editada
+
+                            // Comprobar la validez del número en la fila, columna y bloque
+                            validateCell(finalRow, finalCol, newValue);
                         } else {
                             cell.setText(oldValue); // Revertir si no es válido
                         }
@@ -51,6 +58,59 @@ public class GameView {
                 cells[row][col] = cell; // Guardar referencia en la matriz
                 gridPane.add(cell, col, row); // Agregar el campo de texto al GridPane
             }
+        }
+    }
+
+    private void validateCell(int row, int col, String value) {
+        // Verificar si el valor es vacío
+        if (value.isEmpty()) {
+            lastEditedCell.setStyle(""); // Restablecer estilo si no hay valor
+            return; // Salir si no hay número para validar
+        }
+
+        int number;
+        try {
+            number = Integer.parseInt(value); // Convertir a número
+        } catch (NumberFormatException e) {
+            lastEditedCell.setStyle("-fx-background-color: lightcoral;"); // Estilo para inválido
+            return; // Salir si no se puede convertir
+        }
+
+        boolean isValid = true;
+
+        // Validar en la fila
+        for (int c = 0; c < 6; c++) {
+            if (c != col && cells[row][c].getText().equals(value)) {
+                isValid = false; // El número ya existe en la fila
+                break;
+            }
+        }
+
+        // Validar en la columna
+        for (int r = 0; r < 6; r++) {
+            if (r != row && cells[r][col].getText().equals(value)) {
+                isValid = false; // El número ya existe en la columna
+                break;
+            }
+        }
+
+        // Validar en el bloque de 2x3
+        int startRow = (row / 2) * 2; // Inicia el bloque de 2 filas
+        int startCol = (col / 3) * 3; // Inicia el bloque de 3 columnas
+        for (int r = startRow; r < startRow + 2; r++) {
+            for (int c = startCol; c < startCol + 3; c++) {
+                if ((r != row || c != col) && cells[r][c].getText().equals(value)) {
+                    isValid = false; // El número ya existe en el bloque 2x3
+                    break;
+                }
+            }
+        }
+
+        // Aplicar estilo según la validez
+        if (isValid) {
+            lastEditedCell.setStyle("-fx-background-color: lightgreen; -fx-alignment: center;"); // Estilo para válido
+        } else {
+            lastEditedCell.setStyle("-fx-background-color: lightcoral; -fx-alignment: center;"); // Estilo para inválido
         }
     }
 
@@ -82,5 +142,13 @@ public class GameView {
 
     public TextField getLastEditedCell() {
         return lastEditedCell;
+    }
+
+    public void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
