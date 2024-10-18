@@ -143,4 +143,12 @@ public class GameView {
     public TextField getLastEditedCell() {
         return lastEditedCell;
     }
+
+    public void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

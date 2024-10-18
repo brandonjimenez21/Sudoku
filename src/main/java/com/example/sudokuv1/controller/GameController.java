@@ -1,9 +1,9 @@
 package com.example.sudokuv1.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import com.example.sudokuv1.model.SudokuModel;
 import com.example.sudokuv1.view.GameView;
@@ -16,10 +16,11 @@ public class GameController {
     private GridPane sudokuGrid;
 
     @FXML
-    private Label messageLabel;
-
-    @FXML
     private Button validateBoardButton; // Referencia al botón de validar
+    @FXML
+    private Button retryButton; // Referencia al botón de intentar de nuevo
+    @FXML
+    private Button newGameButton; // Referencia al botón de nuevo juego
 
     private SudokuModel model;
     private GameView view;
@@ -33,6 +34,8 @@ public class GameController {
         view = new GameView(sudokuGrid, model, validateBoardButton); // Pasar el botón al GameView
         view.renderGrid();
         validateBoardButton.setDisable(true); // Deshabilitar el botón al inicio
+        retryButton.setDisable(true); // Deshabilitar el botón de intentar de nuevo al inicio
+        newGameButton.setDisable(true); // Deshabilitar el botón de nuevo juego al inicio
     }
 
     public void validateBoard() {
@@ -110,13 +113,49 @@ public class GameController {
             }
         }
 
-        // Mostrar resultado de validación
+        // Mostrar resultado de validación con Alert
         if (!isComplete) {
-            messageLabel.setText("El tablero no está completo. Rellena todas las celdas antes de validar.");
+            showAlert("Tablero incompleto", "Error", "El tablero no está completo. Rellena todas las celdas antes de validar.");
+            retryButton.setDisable(false); // Habilitar botón de intentar de nuevo
+            newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
         } else if (isValid) {
-            messageLabel.setText("¡Felicidades! El tablero está completo y es válido. Has ganado.");
+            showAlert("¡Felicidades!", null, "¡El tablero está completo y es válido. Has ganado!");
+            retryButton.setDisable(true); // Deshabilitar botón de intentar de nuevo
+            newGameButton.setDisable(false); // Habilitar botón de nuevo juego
         } else {
-            messageLabel.setText("Hay errores en el tablero:\n" + errorMessage);
+            showAlert("Errores en el tablero", "Error", "Hay errores en el tablero:\n" + errorMessage);
+            retryButton.setDisable(false); // Habilitar botón de intentar de nuevo
+            newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
         }
+    }
+
+    // Método para intentar de nuevo
+    @FXML
+    public void retry() {
+        view.clearCellStyles(); // Restablecer estilos de las celdas
+        view.renderGrid(); // Volver a renderizar el tablero
+        validateBoardButton.setDisable(true); // Deshabilitar el botón de validar
+        retryButton.setDisable(true); // Deshabilitar botón de intentar de nuevo
+        newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
+    }
+
+    // Método para nuevo juego
+    @FXML
+    public void newGame() {
+        model = new SudokuModel(); // Generar un nuevo modelo
+        view = new GameView(sudokuGrid, model, validateBoardButton); // Crear nueva vista
+        view.renderGrid(); // Renderizar nuevo tablero
+        validateBoardButton.setDisable(true); // Deshabilitar el botón de validar
+        retryButton.setDisable(true); // Deshabilitar botón de intentar de nuevo
+        newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
+    }
+
+    // Método para mostrar Alertas
+    private void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

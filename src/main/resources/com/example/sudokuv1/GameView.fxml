@@ -15,6 +15,10 @@
     <VBox spacing="10" style="-fx-padding: 20;">
       <Label fx:id="messageLabel" text="Ingrese números..." style="-fx-font-size: 16; -fx-text-fill: #333;"/>
 
+      <Button fx:id="retryButton" text="Intentar de nuevo" onAction="#retry" />
+
+      <Button fx:id="newGameButton" text="Nuevo juego" onAction="#newGame" />
+
       <!-- Botón para validar todo el tablero -->
       <Button fx:id="validateBoardButton" text="Validar Tablero" onAction="#validateBoard" style="-fx-font-size: 14;" disable="true"/>
     </VBox>
