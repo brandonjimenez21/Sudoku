@@ -7,28 +7,31 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import com.example.sudokuv1.model.SudokuModel;
 
+import java.util.ArrayList;
+
 public class GameView {
     private GridPane gridPane;
     private SudokuModel model;
-    private TextField[][] cells; // Matriz para almacenar las celdas
+    private ArrayList<ArrayList<TextField>> cells; // Cambia a ArrayList para almacenar las celdas
     private TextField lastEditedCell; // Para rastrear la última celda editada
     private Button validateBoardButton; // Referencia al botón de validar
 
     public GameView(GridPane gridPane, SudokuModel model, Button validateBoardButton) {
         this.gridPane = gridPane;
         this.model = model;
-        this.cells = new TextField[6][6]; // Inicializa la matriz de celdas
+        this.cells = new ArrayList<>(); // Inicializa el ArrayList
         this.validateBoardButton = validateBoardButton; // Inicializa el botón de validar
+        initializeCells(); // Inicializa las celdas
     }
 
-    public void renderGrid() {
-        gridPane.getChildren().clear(); // Limpia el GridPane
+    public void initializeCells() {
         for (int row = 0; row < 6; row++) {
+            ArrayList<TextField> cellRow = new ArrayList<>(); // Crea una fila de celdas
             for (int col = 0; col < 6; col++) {
                 TextField cell = new TextField();
                 cell.setPrefSize(50, 50);
                 cell.setStyle("-fx-alignment: center; -fx-font-size: 18; -fx-border-color: #000000; -fx-border-width: 1;");
-                int number = model.getGrid()[row][col];
+                int number = model.getGrid().get(row).get(col);
 
                 if (number != 0) {
                     cell.setText(Integer.toString(number)); // Establece el número como texto
@@ -55,9 +58,10 @@ public class GameView {
                     });
                 }
 
-                cells[row][col] = cell; // Guardar referencia en la matriz
-                gridPane.add(cell, col, row); // Agregar el campo de texto al GridPane
+                cellRow.add(cell); // Guarda la celda en la fila
+                gridPane.add(cell, col, row); // Agrega el campo de texto al GridPane
             }
+            cells.add(cellRow); // Añade la fila de celdas a la lista de celdas
         }
     }
 
@@ -80,7 +84,7 @@ public class GameView {
 
         // Validar en la fila
         for (int c = 0; c < 6; c++) {
-            if (c != col && cells[row][c].getText().equals(value)) {
+            if (c != col && cells.get(row).get(c).getText().equals(value)) {
                 isValid = false; // El número ya existe en la fila
                 break;
             }
@@ -88,7 +92,7 @@ public class GameView {
 
         // Validar en la columna
         for (int r = 0; r < 6; r++) {
-            if (r != row && cells[r][col].getText().equals(value)) {
+            if (r != row && cells.get(r).get(col).getText().equals(value)) {
                 isValid = false; // El número ya existe en la columna
                 break;
             }
@@ -99,7 +103,7 @@ public class GameView {
         int startCol = (col / 3) * 3; // Inicia el bloque de 3 columnas
         for (int r = startRow; r < startRow + 2; r++) {
             for (int c = startCol; c < startCol + 3; c++) {
-                if ((r != row || c != col) && cells[r][c].getText().equals(value)) {
+                if ((r != row || c != col) && cells.get(r).get(c).getText().equals(value)) {
                     isValid = false; // El número ya existe en el bloque 2x3
                     break;
                 }
@@ -114,14 +118,14 @@ public class GameView {
         }
     }
 
-    public TextField[][] getCells() {
-        return cells;
+    public ArrayList<ArrayList<TextField>> getCells() {
+        return cells; // Retornar la lista de celdas
     }
 
     public void clearCellStyles() {
-        for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 6; col++) {
-                cells[row][col].setStyle("-fx-border-color: #000000;"); // Reiniciar estilo
+        for (ArrayList<TextField> cellRow : cells) {
+            for (TextField cell : cellRow) {
+                cell.setStyle("-fx-border-color: #000000;"); // Reiniciar estilo
             }
         }
     }
@@ -129,9 +133,9 @@ public class GameView {
     // Método para comprobar si el tablero está completo
     public void checkBoardCompletion() {
         boolean isComplete = true;
-        for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 6; col++) {
-                if (cells[row][col].getText().isEmpty()) {
+        for (ArrayList<TextField> cellRow : cells) {
+            for (TextField cell : cellRow) {
+                if (cell.getText().isEmpty()) {
                     isComplete = false; // Si alguna celda está vacía, el tablero no está completo
                 }
             }
