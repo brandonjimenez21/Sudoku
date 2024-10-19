@@ -19,6 +19,8 @@
 
       <Button fx:id="newGameButton" text="Nuevo juego" onAction="#newGame" />
 
+      <Button fx:id="helpButton" text="Ayuda" onAction="#giveHelp" />
+
       <!-- Botón para validar todo el tablero -->
       <Button fx:id="validateBoardButton" text="Validar Tablero" onAction="#validateBoard" style="-fx-font-size: 14;" disable="true"/>
     </VBox>

@@ -1,6 +1,5 @@
 package com.example.sudokuv1.view;
 
-import com.example.sudokuv1.controller.WelcomeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

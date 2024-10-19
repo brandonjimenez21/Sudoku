@@ -25,3 +25,7 @@
 .button:hover {
     -fx-background-color: #2980b9; /* Color de fondo al pasar el mouse */
 }
+
+.sudoku-cell-suggestion {
+    -fx-background-color: lightblue;
+}
