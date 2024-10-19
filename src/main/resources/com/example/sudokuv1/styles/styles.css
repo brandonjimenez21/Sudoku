@@ -1,29 +1,30 @@
-/* Estilos para la pantalla de inicio */
+/* Styles for the home screen */
 
 .root {
-    -fx-background-color: #f0f8ff; /* Color de fondo suave */
-    -fx-padding: 20; /* Espaciado interno */
-    -fx-alignment: center; /* Centra los elementos */
+    -fx-background-color: #f0f8ff; /* Soft background color */
+    -fx-padding: 20; /* Internal spacing */
+    -fx-alignment: center; /* Center the elements */
 }
 
 .label {
-    -fx-font-size: 24px; /* Tamaño de fuente más grande */
-    -fx-font-weight: bold; /* Negrita */
-    -fx-text-fill: #2c3e50; /* Color del texto */
-    -fx-padding: 10; /* Espaciado alrededor del texto */
+    -fx-font-size: 24px; /* Larger font size */
+    -fx-font-weight: bold; /* Bold */
+    -fx-text-fill: #2c3e50; /* Text color */
+    -fx-padding: 10; /* Spacing around text */
+
 }
 
 .button {
-    -fx-font-size: 18px; /* Tamaño de fuente */
-    -fx-background-color: #3498db; /* Color de fondo del botón */
-    -fx-text-fill: white; /* Color del texto del botón */
-    -fx-padding: 10 20; /* Espaciado interno del botón */
-    -fx-background-radius: 5; /* Bordes redondeados */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.0, 0, 1); /* Sombra en el botón */
+    -fx-font-size: 18px; /* Font size */
+    -fx-background-color: #3498db; /* Button background color */
+    -fx-text-fill: white; /* Button text color */
+    -fx-padding: 10 20; /* Internal spacing of button */
+    -fx-background-radius: 5; /* Rounded edges */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.0, 0, 1); /* Shadow on the button */
 }
 
 .button:hover {
-    -fx-background-color: #2980b9; /* Color de fondo al pasar el mouse */
+    -fx-background-color: #2980b9; /* Background color on hover */
 }
 
 .sudoku-cell-suggestion {

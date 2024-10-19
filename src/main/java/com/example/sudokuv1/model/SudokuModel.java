@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SudokuModel {
-    private ArrayList<ArrayList<Integer>> grid; // Usar ArrayList en lugar de matriz
+    private ArrayList<ArrayList<Integer>> grid;
     private Random random;
 
     public SudokuModel() {
-        grid = new ArrayList<>(6); // Inicializa el ArrayList
+        grid = new ArrayList<>(6); // Initialize the ArrayList
         for (int i = 0; i < 6; i++) {
-            grid.add(new ArrayList<>(6)); // Añadir un ArrayList por cada fila
+            grid.add(new ArrayList<>(6)); // Add an ArrayList for each row
             for (int j = 0; j < 6; j++) {
-                grid.get(i).add(0); // Inicializar con 0
+                grid.get(i).add(0); // Initialize with 0
             }
         }
         random = new Random();
@@ -25,53 +25,53 @@ public class SudokuModel {
     }
 
     private boolean fillGrid(int row, int col) {
-        // Si llegamos al final de la fila, movernos a la siguiente
+        // If we reach the end of the row, move to the next
         if (row == 6) {
             return true;
         }
-        // Si la columna es 6, mover a la siguiente fila
+        // If column is 6, move to next row
         if (col == 6) {
             return fillGrid(row + 1, 0);
         }
 
-        // Solo intentamos llenar celdas vacías
+        // We only try to fill empty cells
         if (grid.get(row).get(col) != 0) {
             return fillGrid(row, col + 1);
         }
 
-        // Probar números del 1 al 6
+        // Test numbers from 1 to 6
         for (int num = 1; num <= 6; num++) {
             if (isValid(row, col, num)) {
-                grid.get(row).set(col, num); // Usar set para establecer el número
+                grid.get(row).set(col, num); // Use set to set the number
 
-                // Recursión para llenar el siguiente espacio
+                // Recursion to fill the next space
                 if (fillGrid(row, col + 1)) {
                     return true;
                 }
 
-                // Deshacer si no funciona
-                grid.get(row).set(col, 0); // Volver a establecer en 0
+                // Undo if it doesn't work
+                grid.get(row).set(col, 0); // Set back to 0
             }
         }
         return false;
     }
 
     public boolean isValid(int row, int col, int number) {
-        // Verificar fila
+        // Check row
         for (int i = 0; i < 6; i++) {
             if (i != col && grid.get(row).get(i) == number) {
                 return false;
             }
         }
 
-        // Verificar columna
+        // Check column
         for (int i = 0; i < 6; i++) {
             if (i != row && grid.get(i).get(col) == number) {
                 return false;
             }
         }
 
-        // Verificar bloque 2x3
+        // Check 2x3 block
         int blockRowStart = (row / 2) * 2;
         int blockColStart = (col / 3) * 3;
 
@@ -87,10 +87,10 @@ public class SudokuModel {
     }
 
     private void removeNumbers() {
-        // Recorremos los bloques de 2x3
+        // We go through the 2x3 blocks
         for (int blockRow = 0; blockRow < 6; blockRow += 2) {
             for (int blockCol = 0; blockCol < 6; blockCol += 3) {
-                // Crear una lista con las posiciones dentro del bloque 2x3
+                // Create a list with the positions within the 2x3 block
                 ArrayList<int[]> positions = new ArrayList<>();
                 for (int i = blockRow; i < blockRow + 2; i++) {
                     for (int j = blockCol; j < blockCol + 3; j++) {
@@ -98,13 +98,13 @@ public class SudokuModel {
                     }
                 }
 
-                // Barajar las posiciones para elegir 4 aleatoriamente
+                //Shuffle the positions to choose 4 randomly
                 shufflePositions(positions);
 
-                // Eliminar 4 de las 6 posiciones en el bloque (ponerlas en 0)
+                // Delete 4 of the 6 positions in the block (set them to 0)
                 for (int k = 0; k < 4; k++) {
                     int[] pos = positions.get(k);
-                    grid.get(pos[0]).set(pos[1], 0); // Establecer la celda en 0
+                    grid.get(pos[0]).set(pos[1], 0); // Set the cell to 0
                 }
             }
         }
@@ -114,7 +114,7 @@ public class SudokuModel {
         Random random = new Random();
         for (int i = positions.size() - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
-            // Intercambiar posiciones[i] con posiciones[j]
+            // Swap positions[i] with positions[j]
             int[] temp = positions.get(i);
             positions.set(i, positions.get(j));
             positions.set(j, temp);
@@ -126,6 +126,6 @@ public class SudokuModel {
     }
 
     public void setNumber(int row, int col, int number) {
-        grid.get(row).set(col, number); // Usar set para establecer el número
+        grid.get(row).set(col, number); // Use set to set the number
     }
 }

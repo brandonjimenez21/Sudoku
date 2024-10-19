@@ -12,21 +12,21 @@ import java.util.ArrayList;
 public class GameView {
     private GridPane gridPane;
     private SudokuModel model;
-    private ArrayList<ArrayList<TextField>> cells; // Cambia a ArrayList para almacenar las celdas
-    private TextField lastEditedCell; // Para rastrear la última celda editada
-    private Button validateBoardButton; // Referencia al botón de validar
+    private ArrayList<ArrayList<TextField>> cells; // Switch to ArrayList to store the cells
+    private TextField lastEditedCell; // To track the last edited cell
+    private Button validateBoardButton; // Reference to the validate button
 
     public GameView(GridPane gridPane, SudokuModel model, Button validateBoardButton) {
         this.gridPane = gridPane;
         this.model = model;
-        this.cells = new ArrayList<>(); // Inicializa el ArrayList
-        this.validateBoardButton = validateBoardButton; // Inicializa el botón de validar
-        initializeCells(); // Inicializa las celdas
+        this.cells = new ArrayList<>(); // Initialize the ArrayList
+        this.validateBoardButton = validateBoardButton; // Initialize the validate button
+        initializeCells(); // Initialize the cells
     }
 
     public void initializeCells() {
         for (int row = 0; row < 6; row++) {
-            ArrayList<TextField> cellRow = new ArrayList<>(); // Crea una fila de celdas
+            ArrayList<TextField> cellRow = new ArrayList<>(); // Create a row of cells
             for (int col = 0; col < 6; col++) {
                 TextField cell = new TextField();
                 cell.setPrefSize(50, 50);
@@ -34,113 +34,113 @@ public class GameView {
                 int number = model.getGrid().get(row).get(col);
 
                 if (number != 0) {
-                    cell.setText(Integer.toString(number)); // Establece el número como texto
-                    cell.setEditable(false); // Deshabilita la edición de la celda
-                    cell.setStyle("-fx-background-color: lightgray; -fx-alignment: center;"); // Cambia el color para mostrar que es fijo
+                    cell.setText(Integer.toString(number)); // Set the number as text
+                    cell.setEditable(false); // Disables cell editing
+                    cell.setStyle("-fx-background-color: lightgray; -fx-alignment: center;"); // Change the color to show that it is fixed
                 } else {
-                    cell.setText(""); // Celdas vacías para ingresar números
+                    cell.setText(""); // Empty cells to enter numbers
                     int finalRow = row;
                     int finalCol = col;
                     cell.textProperty().addListener((observable, oldValue, newValue) -> {
-                        // Validar que el nuevo valor sea un número entre 1 y 6
+                        // Validate that the new value is a number between 1 and 6
                         if (newValue.matches("^[1-6]?$")) {
-                            // Mantener referencia a la última celda editada
-                            lastEditedCell = cell; // Guardar la celda actualmente editada
+                            // Keep reference to the last edited cell
+                            lastEditedCell = cell; // Save the currently edited cell
 
-                            // Comprobar la validez del número en la fila, columna y bloque
+                            // Check the validity of the number in the row, column and block
                             validateCell(finalRow, finalCol, newValue);
                         } else {
-                            cell.setText(oldValue); // Revertir si no es válido
+                            cell.setText(oldValue); // Rollback if invalid
                         }
 
-                        // Deshabilitar el botón de validar si hay celdas vacías
+                        // Disable the validate button if there are empty cells
                         checkBoardCompletion();
                     });
                 }
 
-                cellRow.add(cell); // Guarda la celda en la fila
-                gridPane.add(cell, col, row); // Agrega el campo de texto al GridPane
+                cellRow.add(cell); // Save the cell to the row
+                gridPane.add(cell, col, row); // Add the text field to the GridPane
             }
-            cells.add(cellRow); // Añade la fila de celdas a la lista de celdas
+            cells.add(cellRow); // Add the row of cells to the list of cells
         }
     }
 
     private void validateCell(int row, int col, String value) {
-        // Verificar si el valor es vacío
+        // Check if the value is empty
         if (value.isEmpty()) {
-            lastEditedCell.setStyle(""); // Restablecer estilo si no hay valor
-            return; // Salir si no hay número para validar
+            lastEditedCell.setStyle(""); // Reset style if no value
+            return; // Exit if there is no number to validate
         }
 
         int number;
         try {
-            number = Integer.parseInt(value); // Convertir a número
+            number = Integer.parseInt(value); // convert a number
         } catch (NumberFormatException e) {
-            lastEditedCell.setStyle("-fx-background-color: lightcoral;"); // Estilo para inválido
-            return; // Salir si no se puede convertir
+            lastEditedCell.setStyle("-fx-background-color: lightcoral;"); // Style for invalid
+            return; // Exit if cannot be converted
         }
 
         boolean isValid = true;
 
-        // Validar en la fila
+        // Validate in row
         for (int c = 0; c < 6; c++) {
             if (c != col && cells.get(row).get(c).getText().equals(value)) {
-                isValid = false; // El número ya existe en la fila
+                isValid = false; // The number already exists in the row
                 break;
             }
         }
 
-        // Validar en la columna
+        // Validate on column
         for (int r = 0; r < 6; r++) {
             if (r != row && cells.get(r).get(col).getText().equals(value)) {
-                isValid = false; // El número ya existe en la columna
+                isValid = false; // The number already exists in the column
                 break;
             }
         }
 
-        // Validar en el bloque de 2x3
-        int startRow = (row / 2) * 2; // Inicia el bloque de 2 filas
-        int startCol = (col / 3) * 3; // Inicia el bloque de 3 columnas
+        // Validate in the 2x3 block
+        int startRow = (row / 2) * 2; // Start the block of 2 rows
+        int startCol = (col / 3) * 3; // Start the 3 column block
         for (int r = startRow; r < startRow + 2; r++) {
             for (int c = startCol; c < startCol + 3; c++) {
                 if ((r != row || c != col) && cells.get(r).get(c).getText().equals(value)) {
-                    isValid = false; // El número ya existe en el bloque 2x3
+                    isValid = false; // The number already exists in the 2x3 block
                     break;
                 }
             }
         }
 
-        // Aplicar estilo según la validez
+        // Apply style based on validity
         if (isValid) {
-            lastEditedCell.setStyle("-fx-background-color: lightgreen; -fx-alignment: center;"); // Estilo para válido
+            lastEditedCell.setStyle("-fx-background-color: lightgreen; -fx-alignment: center;"); // Style for valid
         } else {
-            lastEditedCell.setStyle("-fx-background-color: lightcoral; -fx-alignment: center;"); // Estilo para inválido
+            lastEditedCell.setStyle("-fx-background-color: lightcoral; -fx-alignment: center;"); // Style for invalid
         }
     }
 
     public ArrayList<ArrayList<TextField>> getCells() {
-        return cells; // Retornar la lista de celdas
+        return cells; // Return the list of cells
     }
 
     public void clearCellStyles() {
         for (ArrayList<TextField> cellRow : cells) {
             for (TextField cell : cellRow) {
-                cell.setStyle("-fx-border-color: #000000;"); // Reiniciar estilo
+                cell.setStyle("-fx-border-color: #000000;"); // Reset style
             }
         }
     }
 
-    // Método para comprobar si el tablero está completo
+    // Method to check if the board is complete
     public void checkBoardCompletion() {
         boolean isComplete = true;
         for (ArrayList<TextField> cellRow : cells) {
             for (TextField cell : cellRow) {
                 if (cell.getText().isEmpty()) {
-                    isComplete = false; // Si alguna celda está vacía, el tablero no está completo
+                    isComplete = false; // If any cell is empty, the board is not complete
                 }
             }
         }
-        // Habilitar o deshabilitar el botón de validar
+        // Enable or disable the validate button
         validateBoardButton.setDisable(!isComplete);
     }
 

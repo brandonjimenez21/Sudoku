@@ -10,18 +10,18 @@ import javafx.fxml.FXML;
 public class WelcomeController {
 
     @FXML
-    private Button startButton; // Botón del archivo FXML que dispara la acción
+    private Button startButton; // FXML file button that triggers the action
 
     @FXML
     public void startGame(ActionEvent event) throws Exception {
-        // Obtener el Stage actual desde el botón (u otro nodo de la vista)
+        // Get the current scenario from the button (or other view node)
         Stage stage = (Stage) startButton.getScene().getWindow();
 
-        // Cargar la nueva escena del juego
+        // Load the new game scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sudokuv1/GameView.fxml"));
         Scene scene = new Scene(loader.load());
 
-        // Cambiar la escena en el Stage actual
+        // Change the scene in the current Stage
         stage.setScene(scene);
         stage.setTitle("Sudoku 6x6 - Juego");
     }
