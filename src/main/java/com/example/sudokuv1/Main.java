@@ -17,7 +17,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sudokuv1/WelcomeView.fxml"));
         Scene scene = new Scene(loader.load());
 
-        // Establecer el ícono de la ventana
+        // Set the window icon
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/sudokuv1/images/icono.png"))));
 
         primaryStage.setScene(scene);

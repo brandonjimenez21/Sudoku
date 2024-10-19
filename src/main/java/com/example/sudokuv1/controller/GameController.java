@@ -55,17 +55,17 @@ public class GameController {
         boolean isValid = true;
         StringBuilder errorMessage = new StringBuilder("Errores encontrados:\n");
 
-        // Validar filas y columnas
+        // Validate rows and columns
         for (int row = 0; row < 6; row++) {
             Set<Integer> rowCheck = new HashSet<>();
             Set<Integer> colCheck = new HashSet<>();
 
             for (int col = 0; col < 6; col++) {
-                // Verificar fila
+                // Check row
                 String cellText = view.getCells().get(row).get(col).getText();
                 if (cellText.isEmpty()) {
-                    isComplete = false;  // Hay celdas vacías, el tablero no está completo
-                    continue;  // No validamos números en celdas vacías
+                    isComplete = false;  // There are empty cells, the board is not complete
+                    continue;  // We do not validate numbers in empty cells
                 }
 
                 int number = Integer.parseInt(cellText);
@@ -76,11 +76,11 @@ public class GameController {
                     view.getCells().get(row).get(col).setStyle("-fx-background-color: lightcoral; -fx-alignment: center;");
                 }
 
-                // Verificar columna
+                // Check column
                 String colCellText = view.getCells().get(col).get(row).getText();
                 if (colCellText.isEmpty()) {
-                    isComplete = false;  // Hay celdas vacías, el tablero no está completo
-                    continue;  // No validamos números en celdas vacías
+                    isComplete = false;  // There are empty cells, the board is not complete
+                    continue;  // We do not validate numbers in empty cells
                 }
 
                 int colNumber = Integer.parseInt(colCellText);
@@ -93,26 +93,26 @@ public class GameController {
             }
         }
 
-        // Mostrar resultado de validación con Alert
+        // Show validation result with Alert
         if (!isComplete) {
             showAlert("Tablero incompleto", "Error", "El tablero no está completo. Rellena todas las celdas antes de validar.");
-            retryButton.setDisable(false); // Habilitar botón de intentar de nuevo
-            newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
+            retryButton.setDisable(false); //Enable try again button
+            newGameButton.setDisable(true); // Disable new game button
         } else if (isValid) {
             showAlert("¡Felicidades!", null, "¡El tablero está completo y es válido. Has ganado!");
 
-            // Deshabilita la edicion de todas las celdas
+            // Disable editing of all cells
             for (ArrayList<TextField> cellRow : view.getCells()){
                 for (TextField cell : cellRow){
-                    cell.setEditable(false); // Deshabilita la edicion
+                    cell.setEditable(false); // Disable editing
                 }
             }
-            retryButton.setDisable(true); // Deshabilitar botón de intentar de nuevo
-            newGameButton.setDisable(false); // Habilitar botón de nuevo juego
+            retryButton.setDisable(true); // Disable try again button
+            newGameButton.setDisable(false); // Enable new game button
         } else {
             showAlert("Errores en el tablero", "Error", "Hay errores en el tablero:\n" + errorMessage);
-            retryButton.setDisable(false); // Habilitar botón de intentar de nuevo
-            newGameButton.setDisable(true); // Deshabilitar botón de nuevo juego
+            retryButton.setDisable(false); //Enable try again button
+            newGameButton.setDisable(true); // Disable new game button
         }
     }
 
@@ -139,7 +139,7 @@ public class GameController {
             int row = cellPosition / 6;
             int col = cellPosition % 6;
 
-            // Sugerir un número que no esté en la fila, columna o bloque
+            // Suggest a number that is not in the row, column or block
             int suggestedNumber = suggestNumber(row, col);
             view.getCells().get(row).get(col).setText(Integer.toString(suggestedNumber));
             view.getCells().get(row).get(col).setStyle("-fx-background-color: lightblue; -fx-alignment: Center"); // Indicar ayuda
@@ -149,24 +149,24 @@ public class GameController {
     }
 
     private int suggestNumber(int row, int col) {
-        boolean[] used = new boolean[7]; // Para números 1-6
+        boolean[] used = new boolean[7]; // For numbers 1-6
         for (int i = 0; i < 6; i++) {
-            // Marcar números en la fila
+            // Mark numbers in the row
             String rowText = view.getCells().get(row).get(i).getText();
             if (!rowText.isEmpty()) {
                 used[Integer.parseInt(rowText)] = true;
             }
-            // Marcar números en la columna
+            // Mark numbers in the column
             String colText = view.getCells().get(i).get(col).getText();
             if (!colText.isEmpty()) {
                 used[Integer.parseInt(colText)] = true;
             }
         }
-        // Sugerir un número no usado
+        // Suggest an unused number
         for (int i = 1; i <= 6; i++) {
-            if (!used[i]) return i; // Retornar el primer número no usado
+            if (!used[i]) return i; // Return the first unused number
         }
-        return -1; // Debería ser imposible
+        return -1; // It should be impossible
     }
 
     @FXML

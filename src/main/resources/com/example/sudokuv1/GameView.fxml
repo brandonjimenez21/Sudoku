@@ -7,7 +7,7 @@
 
   <center>
     <GridPane fx:id="sudokuGrid" style="-fx-padding: 20; -fx-background-color: #f9f9f9;" hgap="10" vgap="10">
-      <!-- Aquí se agregarán las celdas del Sudoku -->
+      <!-- Sudoku cells were added here -->
     </GridPane>
   </center>
 
@@ -21,7 +21,7 @@
 
       <Button fx:id="helpButton" text="Ayuda" onAction="#giveHelp" />
 
-      <!-- Botón para validar todo el tablero -->
+      <!-- Button to validate the entire board -->
       <Button fx:id="validateBoardButton" text="Validar Tablero" onAction="#validateBoard" style="-fx-font-size: 14;" disable="true"/>
     </VBox>
   </right>
